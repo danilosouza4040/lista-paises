@@ -1,6 +1,5 @@
-import Image from 'next/image';
 import { Container } from '@/components/Container';
-import Link from 'next/link';
+import CountryCard from '@/components/CountryCard/page';
 
 export type Country = {
   name: {
@@ -21,9 +20,11 @@ export type Country = {
   reginon: string;
   subregion: string;
   population: number;
-  languages?:{
-    [key: string]: string
-  }
+  languages?: {
+    [key: string]: string;
+  };
+  borders?: string[];
+  cca3?: string;
 };
 
 async function getPaises(): Promise<Country[]> {
@@ -45,26 +46,13 @@ export default async function Home() {
     <Container>
       <section className="grid grid-cols-2 md:grid-cols-5 gap-6 w-full container mt-16">
         {countries.map((country) => (
-          <Link
-            href={`/pais/${country.name.common}`}
+          <CountryCard
             key={country.name.common}
-          >
-            <article
-              className="h-64 min-w-full p-2 bg-white rounded-md hover:border-indigo-200 transition-all hover:shadow-2xl" 
-            >
-              <div className="relative w-full h-40 p-2 overflow-hidden rounded-md">
-                <Image
-                  className="object-cover"
-                  src={country.flags.svg}
-                  alt={country.flags.alt}
-                  fill
-                />
-              </div>
-              <h1 className="font-bold text-center text-md mt-2">
-                {country.translations.por.common}
-              </h1>
-            </article>
-          </Link>
+            name={country.name.common}
+            ptName={country.translations.por.common}
+            flag={country.flags.svg}
+            flagAlt={country.flags.alt}
+          />
         ))}
       </section>
     </Container>
